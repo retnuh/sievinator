@@ -76,7 +76,7 @@
                   (lazy-cat sq (blocked-seq f nsize)))))
              (primes-seq []
                (cons 2 (blocked-seq (fn [{primes :primes} start-index]
-                                      [(map primes (range start-index (count primes))) (count primes)]))))
+                                      [(subvec primes start-index) (count primes)]))))
              (composites-seq []
                (let [odd-composites 
                      (blocked-seq (fn [{numbers :odd-numbers-seen} start-index]
