@@ -15,6 +15,21 @@ consumes:
 
 paths:
   # Primes
+  '/primes/nth/{n}':
+    get:
+      summary: get the nth prime
+      description: |
+       get the nth prime
+      tags:
+      - Primes
+      operationId: 'sieve.api/primes-nth'
+      parameters:
+      - $ref: '#/parameters/Number'
+      responses:
+        200:
+          description: The nth prime
+          schema:
+            type: integer
   '/primes/upto/{n}':
     get:
       summary: primes up to number
@@ -62,6 +77,54 @@ paths:
             items:
               type: number
               format: integer
+  # The Sieve itself
+  '/sieve/state':
+    get:
+      summary: The current state of the sieve
+      description: |
+        The internal state of the sieve
+      tags:
+      - Sieve
+      operationId: 'sieve.api/sieve-state'
+      responses:
+        200:
+          description: The primes
+  '/sieve/block-size':
+    get:
+      summary: The current block size when growing the sieve
+      description: |
+        The Sievinator grows primes blocks at a time; this is the current block size
+      tags:
+      - Sieve
+      operationId: 'sieve.api/sieve-block-size'
+      responses:
+        200:
+          description: The primes
+          schema:
+            type: array
+            items:
+              type: number
+              format: integer
+    post:
+      summary: Set the current block size
+      description: |
+        The Sievinator grows primes blocks at a time; change the block size
+      tags:
+      - Sieve
+      operationId: 'sieve.api/sieve-block-size'
+      parameters:
+      - name: size
+        in: formData
+        description: The new block size
+        required: true
+        type: number
+        format: integer
+      responses:
+        200:
+          description: The old block size
+          schema:
+            type: integer
+            format: integer
 
 # definitions
 

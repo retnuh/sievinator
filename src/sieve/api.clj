@@ -30,121 +30,30 @@
       response
       content-type-json))
 
-;; applications
+(defn primes-nth [{:keys [n]} request {:keys [primes]}]
+  (log/debug (str "Looking for nth " n " prime"))
+  (-> (nth primes n)
+      response
+      content-type-json))
 
-;; (defn read-applications [{:keys [search]} request db]
-;;   (u/require-internal-user request)
-;;   (if (nil? search)
-;;     (do
-;;       (log/debug "Read all applications.")
-;;       (-> (sql/cmd-read-applications {} {:connection db})
-;;           (sql/strip-prefixes)
-;;           (response)
-;;           (content-type-json)))
-;;     (do
-;;       (log/debug "Search in applications with term %s." search)
-;;       (-> (sql/cmd-search-applications {:searchquery search} {:connection db})
-;;           (sql/strip-prefixes)
-;;           (response)
-;;           (content-type-json)))))
+;; the sieve itself
 
-;; (defn load-application
-;;   "Loads a single application by ID, used for team checks."
-;;   [application-id db]
-;;   (-> (sql/cmd-read-application
-;;         {:id application-id}
-;;         {:connection db})
-;;       (sql/strip-prefixes)
-;;       (first)))
+(defn sieve-block-size
+  ([{:keys [size]} request {:keys [block-size]}]
+   (let [old (block-size)]
+     (log/debug (str "old-size: " old " new-size: " size))
+     (when size
+       (block-size size))
+     (-> old
+         response
+         content-type-json))))
 
-;; (defn read-application [{:keys [application_id]} request db]
-;;   (u/require-internal-user request)
-;;   (log/debug "Read application %s." application_id)
-;;   (-> (sql/cmd-read-application
-;;         {:id application_id}
-;;         {:connection db})
-;;       (sql/strip-prefixes)
-;;       (single-response)
-;;       (content-type-json)))
-
-;; (defn create-or-update-application! [{:keys [application application_id]} request db]
-;;   (let [old-application (load-application application_id db)
-;;         defaults {:specification_url nil
-;;                   :documentation_url nil
-;;                   :subtitle          nil
-;;                   :scm_url           nil
-;;                   :service_url       nil
-;;                   :description       nil
-;;                   :required_approvers 2}]
-;;     (u/require-internal-team (or (:team_id old-application) (:team_id application)) request)
-;;     (sql/cmd-create-or-update-application!
-;;       (merge defaults application {:id application_id})
-;;       {:connection db})
-;;     (log/audit "Created/updated application %s using data %s." application_id application)
-;;     (response nil)))
-
-;; (defn read-application-approvals [{:keys [application_id]} request db]
-;;   (u/require-internal-user request)
-;;   (log/debug "Read all approvals for application %s." application_id)
-;;   (->> (sql/cmd-read-application-approvals
-;;          {:application_id application_id}
-;;          {:connection db})
-;;        (sql/strip-prefixes)
-;;        (map #(:approval_type %))
-;;        (response)
-;;        (content-type-json)))
-
-;; ;; versions
-
-;; (defn read-versions-by-application [{:keys [application_id]} request db]
-;;   (u/require-internal-user request)
-;;   (log/debug "Read all versions for application %s." application_id)
-;;   (-> (sql/cmd-read-versions-by-application
-;;         {:application_id application_id}
-;;         {:connection db})
-;;       (sql/strip-prefixes)
-;;       (response)
-;;       (content-type-json)))
-
-;; (defn read-version-by-application [{:keys [application_id version_id]} request db]
-;;   (u/require-internal-user request)
-;;   (log/debug "Read version %s of application %s." version_id application_id)
-;;   (-> (sql/cmd-read-version-by-application
-;;         {:id             version_id
-;;          :application_id application_id}
-;;         {:connection db})
-;;       (sql/strip-prefixes)
-;;       (single-response)
-;;       (content-type-json)))
-
-;; (defn create-or-update-version! [{:keys [application_id version_id version]} request db]
-;;   (if-let [application (load-application application_id db)]
-;;     (do
-;;       (u/require-internal-team (:team_id application) request)
-;;       (with-db-transaction
-;;         [connection db]
-;;         (let [defaults {:notes nil}]
-;;           (sql/cmd-create-or-update-version!
-;;             (merge defaults version {:id             version_id
-;;                                      :application_id application_id})
-;;             {:connection connection}))
-;;         (sql/cmd-delete-approvals! {:application_id application_id :version_id version_id} {:connection connection}))
-;;       (log/audit "Created/updated version %s for application %s using data %s." version_id application_id version)
-;;       (response nil))
-;;     (api/error 404 "application not found")))
-
-;; ;; approvals
-
-;; (defn read-approvals-by-version [{:keys [application_id version_id]} request db]
-;;   (u/require-internal-user request)
-;;   (log/debug "Read approvals for version %s of application %s." version_id application_id)
-;;   (-> (sql/cmd-read-approvals-by-version
-;;         {:version_id     version_id
-;;          :application_id application_id}
-;;         {:connection db})
-;;       (sql/strip-prefixes)
-;;       (response)
-;;       (content-type-json)))
+(defn sieve-state
+  ([params request {:keys [state]}]
+   (log/debug (str "state: " (state)))
+   (-> (state)
+       response
+       content-type-json)))
 
 ;; (defn approve-version! [{:keys [application_id version_id approval]} request db]
 ;;   (if-let [application (load-application application_id db)]

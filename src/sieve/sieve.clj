@@ -23,7 +23,7 @@
                    (send the-agent fill-up-to n)
                    (and wait? (await the-agent)))))
              ;; this is not pretty
-             (fill-up-to [{:keys [odd-numbers-seen primes] :as current-state} ^long n]
+             (fill-up-to [{:keys [odd-numbers-seen primes block-size] :as current-state} ^long n]
                (if-not (< (count odd-numbers-seen) (quot n 2))
                  current-state
                  (let [numbers (vec-extend odd-numbers-seen (quot n 2) 0)
@@ -47,7 +47,7 @@
                                             primes
                                             (filter #(zero? (get odd-numbers-seen %))
                                                     (range next-index (count odd-numbers-seen))))]
-                     {:odd-numbers-seen odd-numbers-seen :primes new-primes}))))
+                     {:odd-numbers-seen odd-numbers-seen :primes new-primes :block-size block-size}))))
              (primes-up-to [^long n]
                (ensure-n n false)
                (take-while #(<= % n) (cons 2 (lazy-seq (do (await the-agent)
@@ -64,12 +64,12 @@
                              (recur (/ n i) (conj f i) numbers))))))
              (blocked-seq
                ([f]
-                (ensure-n (:block-size @state) false)
+                (ensure-n (:block-size (state)) false)
                 (lazy-seq (blocked-seq f 0)))
                ([f start-index]
                 (await the-agent)
                 (let [{:keys [primes odd-numbers-seen] :as s} @the-agent
-                      block-size (:block-size @state)
+                      block-size (:block-size (state))
                       size (* 2 (count odd-numbers-seen))
                       [sq nsize] (f s start-index)]
                   (ensure-n (+ block-size size) false)
@@ -100,8 +100,11 @@
                    (ensure-n n true)
                    (let [{:keys [odd-numbers-seen]} @the-agent]
                      (= 0 (odd-numbers-seen (dec (quot n 2))))))))
+             (block-size
+               ([] (:block-size (state)))
+               ([bs] (send the-agent assoc :block-size bs)))
              ]
        {:wait #(await the-agent) :state state :primes-up-to primes-up-to
         :primes-seq primes-seq :composites-seq composites-seq :factors-seq factors-seq
-        :factors factors :prime? prime?}))))
+        :factors factors :prime? prime? :block-size block-size}))))
 
