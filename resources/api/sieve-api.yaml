@@ -1,0 +1,78 @@
+swagger: '2.0'
+
+# basic meta information
+info:
+  title: Sievinator API
+  version: '1.0'
+  description: The Sievinator for all your prime number needs!
+
+# technical configuration
+basePath: /
+produces:
+- application/json
+consumes:
+- application/json
+
+paths:
+  # Primes
+  '/primes/upto/{n}':
+    get:
+      summary: primes up to number
+      description: |
+        all the primes up to and including this number (if it is prime)
+      tags:
+      - Primes
+      operationId: 'sieve.api/primes-up-to'
+      parameters:
+      - $ref: '#/parameters/Number'
+      responses:
+        200:
+          description: The primes
+          schema:
+            type: array
+            items:
+              type: number
+              format: integer
+  '/primes/from/{from}/to/{to}':
+    get:
+      summary: primes up to number
+      description: |
+        all the primes up to and including this number (if it is prime)
+      tags:
+      - Primes
+      operationId: 'sieve.api/primes-from-to'
+      parameters:
+        - name: from
+          in: path
+          description: The inclusive starting point
+          required: true
+          type: number
+          format: integer
+        - name: to
+          in: path
+          description: The inclusive endpoint
+          required: true
+          type: number
+          format: integer
+      responses:
+        200:
+          description: The primes between from and to
+          schema:
+            type: array
+            items:
+              type: number
+              format: integer
+
+# definitions
+
+parameters:
+  Number:
+    name: n
+    in: path
+    type: number
+    format: integer
+    description: The number in question
+    required: true
+    #pattern: "^[a-z][a-z0-9-]*[a-z0-9]$"
+
+
