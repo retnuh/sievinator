@@ -12,9 +12,8 @@
    [clojure.pprint :refer [pprint]]
    [clojure.reflect :refer [reflect]]
    [clojure.repl :refer [apropos dir doc find-doc pst source]]
-   [clojure.tools.namespace.repl :refer [refresh refresh-all]]
-   [com.stuartsierra.component :as component]
-   [sieve.core]))
+   [clojure.tools.namespace.repl :refer [refresh refresh-all disable-unload!]]
+   [com.stuartsierra.component :as component]))
 
 (def system
   "A Var containing an object representing the application under
@@ -25,7 +24,9 @@
   "Starts the system running, sets the Var #'system."
   []
   (alter-var-root #'system
-                  (constantly (sieve.core/run {:system-log-level "DEBUG"}))))
+                  (fn [s] (eval (read-string
+                                "(do (require '(sieve core))
+                                     (sieve.core/run {:system-log-level \"DEBUG\"}))"  )))))
 
 (defn stop
   "Stops the system if it is currently running, updates the Var
@@ -45,3 +46,7 @@
   []
   (stop)
   (refresh :after 'user/go))
+
+;; Stop the reloading magic from unloading this bad boy, stop
+;; irritation when compile error, etc.
+(disable-unload!)
