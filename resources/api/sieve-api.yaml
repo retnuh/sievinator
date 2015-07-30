@@ -125,6 +125,35 @@ paths:
           schema:
             type: integer
             format: integer
+  # Ops on normal numbers (not necessarily primes)
+  '/numbers/is-prime/{n}':
+    get:
+      summary: is this number prime?
+      tags:
+      - Numbers
+      operationId: 'sieve.api/numbers-is-prime'
+      parameters:
+      - $ref: '#/parameters/Number'
+      responses:
+        200:
+          description: whether or not it is prime
+          schema:
+            type: boolean
+  '/numbers/factors/{n}':
+    get:
+      summary: Get the factors of this number
+      tags:
+      - Numbers
+      operationId: 'sieve.api/numbers-factors'
+      parameters:
+      - $ref: '#/parameters/Number'
+      responses:
+        200:
+          description: all the factors of this number.
+          schema:
+            items:
+              type: number
+              format: integer
 
 # definitions
 

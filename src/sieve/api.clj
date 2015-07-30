@@ -11,25 +11,40 @@
 (def default-http-configuration
   {:http-port 8080})
 
+;; numbers
+
+(defn numbers-is-prime [{:keys [n] :as params} request {:keys [prime?]}]
+  (log/debug "params: '%s'" params)
+  (log/debug (str n))
+  (-> n
+      prime?
+      response
+      content-type-json))
+
+(defn numbers-factors [{:keys [n] :as params} request {:keys [factors]}]
+  (log/debug "params: '%s'" params)
+  (log/debug (str n))
+  (-> n
+      factors
+      response
+      content-type-json))
+
 ;; primes
 
 (defn primes-up-to [{:keys [n] :as params} request {:keys [primes-up-to]}]
   (log/debug "params: '%s'" params)
   (log/debug (str n))
   (-> n
-      long
       primes-up-to
-      vec
       response
       content-type-json))
 
 (defn primes-from-to [{:keys [from to] :as params} request {:keys [primes-up-to]}]
   (log/debug "params: '%s'" params)
   (-> (drop-while #(< % from) (primes-up-to to))
-      vec
       response
       content-type-json))
-
+  
 (defn primes-nth [{:keys [n]} request {:keys [primes]}]
   (log/debug (str "Looking for nth " n " prime"))
   (-> (nth primes n)
