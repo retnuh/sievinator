@@ -1,5 +1,7 @@
 (ns sieve.sieve)
 
+(defn number-for-index [^long c] (inc (* 2 (inc c))))
+
 (defn- pthread [& args]
   (apply println (.getName (Thread/currentThread)) args))
 
@@ -17,7 +19,6 @@
    (let [the-agent (agent (merge {:primes [] :odd-numbers-seen [] :block-size 500000}
                                  initial-state))]
      (letfn [(state [] @the-agent)
-             (number-for-index [^long c] (inc (* 2 (inc c))))
              (ensure-n [n wait?]
                (let [{:keys [odd-numbers-seen]} @the-agent]
                  (when (< (count odd-numbers-seen) (quot n 2))

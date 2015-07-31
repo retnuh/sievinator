@@ -3,7 +3,9 @@
             [ring.util.response :refer :all]
             [org.zalando.stups.friboo.ring :refer :all]
             [org.zalando.stups.friboo.log :as log]
-            [io.sarnowski.swagger1st.util.api :as api]))
+            [io.sarnowski.swagger1st.util.api :as api]
+            [sieve.sieve :refer [number-for-index]]
+            ))
 
 ; define the API component and its dependencies (a sieve component)
 (def-http-component API "api/sieve-api.yaml" [sieve])
@@ -52,6 +54,12 @@
       content-type-json))
 
 ;; the sieve itself
+
+(defn sieve-highest-seen [params request {:keys [state]}]
+  (let [{ons :odd-numbers-seen} (state)]
+    (-> (number-for-index (dec (count ons)))
+        response
+        content-type-json)))
 
 (defn sieve-block-size
   ([{:keys [size]} request {:keys [block-size]}]

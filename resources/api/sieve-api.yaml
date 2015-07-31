@@ -89,6 +89,17 @@ paths:
       responses:
         200:
           description: The primes
+  '/sieve/highest-seen':
+    get:
+      summary: The highest number examined by the sieve
+      tags:
+      - Sieve
+      operationId: 'sieve.api/sieve-highest-seen'
+      responses:
+        200:
+          description: The highest number seen
+          schema:
+            type: integer
   '/sieve/block-size':
     get:
       summary: The current block size when growing the sieve
