@@ -46,19 +46,11 @@
         (storage/store-state ss ((:state component))))
       (dissoc component :sievinator))))
 
-(defmacro def-sieve-component
-  "Defines a new sievinator component."
-  [name]
-  ; 'configuration' and 'ss' must be provided during initialization
-  `(defrecord ~name [~(symbol "configuration") ~(symbol "ss")]
-     component/Lifecycle
-
-     (start [this#]
-       (start-component this#))
-
-     (stop [this#]
-       (stop-component this#))))
-
-(def-sieve-component SIEVE)
+(defrecord SIEVE [configuration ss]
+   component/Lifecycle
+   (start [this]
+     (start-component this))
+   (stop [this]
+     (stop-component this)))
 
 (def default-sieve-configuration {:sieve-block-size 100})
