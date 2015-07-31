@@ -7,7 +7,7 @@
 
   :min-lein-version "2.0.0"
 
-  :dependencies [[org.zalando.stups/friboo "0.29.0"]]
+  :dependencies [[org.zalando.stups/friboo "1.0.0-RC1"]]
 
   :main ^:skip-aot sieve.core
   :uberjar-name "sieve.jar"

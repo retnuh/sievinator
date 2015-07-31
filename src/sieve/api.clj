@@ -5,8 +5,8 @@
             [org.zalando.stups.friboo.log :as log]
             [io.sarnowski.swagger1st.util.api :as api]))
 
-; define the API component and its dependencies
-(def-http-component API "api/sieve-api.yaml" [svc])
+; define the API component and its dependencies (a sieve component)
+(def-http-component API "api/sieve-api.yaml" [sieve])
 
 (def default-http-configuration
   {:http-port 8080})

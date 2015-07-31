@@ -12,9 +12,10 @@
 ;; Introducing - the sievinator!!
 
 (defn sievinator
-  ([] (sievinator {:primes [] :odd-numbers-seen [] :block-size 1000}))
+  ([] (sievinator {}))
   ([initial-state] 
-   (let [the-agent (agent initial-state)]
+   (let [the-agent (agent (merge {:primes [] :odd-numbers-seen [] :block-size 500000}
+                                 initial-state))]
      (letfn [(state [] @the-agent)
              (number-for-index [^long c] (inc (* 2 (inc c))))
              (ensure-n [n wait?]
