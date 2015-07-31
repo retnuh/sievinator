@@ -1,0 +1,9 @@
+CREATE TABLE odd_numbers_seen (
+  ind INTEGER PRIMARY KEY ASC,
+  factor INTEGER NOT NULL
+) WITHOUT ROWID;
+
+CREATE TABLE config (
+  key TEXT PRIMARY KEY NOT NULL,
+  value INTEGER NOT NULL
+);

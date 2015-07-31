@@ -6,6 +6,7 @@
             [sieve.api :as api]
             [sieve.service :as svc]
             [sieve.storage.fs :as fs-ss]
+            [sieve.storage.sqlite :as sqlite-ss]
             )
   (:gen-class))
 
@@ -13,17 +14,21 @@
   "Initializes and starts the whole system."
   [default-configuration]
   (let [configuration (config/load-configuration
-                       [:sieve :http :fs-ss]
+                       [:sieve :http :fs-ss :sqlite-ss]
                        [svc/default-sieve-configuration
                         api/default-http-configuration
                         fs-ss/default-fs-sieve-storage-configuration
+                        sqlite-ss/default-sqlite-sieve-storage-configuration
                         default-configuration])
         _ (log/info "Starting with configuration: %s" (config/mask configuration))
         system (system-map
                 :fs-ss (fs-ss/map->FS-SS {:configuration (:fs-ss configuration)})
+                :sqlite-ss (sqlite-ss/map->SQLITE-SS
+                            {:configuration (:sqlite-ss configuration)})
                 :sieve (using
                         (svc/map->SIEVE {:configuration (:sieve configuration)})
-                        {:ss :fs-ss})
+                        ;; TODO choose which storage to use!
+                        {:ss :sqlite-ss})
                 :api (using
                       (api/map->API {:configuration (:http configuration)})
                       [:sieve]))]

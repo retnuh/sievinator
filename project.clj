@@ -7,7 +7,10 @@
 
   :min-lein-version "2.0.0"
 
-  :dependencies [[org.zalando.stups/friboo "1.0.0-RC1"]]
+  :dependencies [[org.zalando.stups/friboo "1.0.0-RC1"]
+                 [org.xerial/sqlite-jdbc "3.8.11"]
+                 [yesql "0.4.2"]
+                 [org.clojure/java.jdbc "0.4.1"]]
 
   :main ^:skip-aot sieve.core
   :uberjar-name "sieve.jar"
