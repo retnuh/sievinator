@@ -5,7 +5,6 @@
             [org.zalando.stups.friboo.log :as log]
             [sieve.api :as api]
             [sieve.service :as svc]
-            [sieve.storage.fs :as fs-ss]
             )
   (:gen-class))
 
@@ -13,17 +12,13 @@
   "Initializes and starts the whole system."
   [default-configuration]
   (let [configuration (config/load-configuration
-                       [:sieve :http :fs-ss]
+                       [:sieve :http]
                        [svc/default-sieve-configuration
                         api/default-http-configuration
-                        fs-ss/default-fs-sieve-storage-configuration
                         default-configuration])
         _ (log/info "Starting with configuration: %s" (config/mask configuration))
         system (system-map
-                :fs-ss (fs-ss/map->FS-SS {:configuration (:fs-ss configuration)})
-                :sieve (using
-                        (svc/map->SIEVE {:configuration (:sieve configuration)})
-                        {:ss :fs-ss})
+                :sieve (svc/map->SIEVE {:configuration (:sieve configuration)})
                 :api (using
                       (api/map->API {:configuration (:http configuration)})
                       [:sieve]))]

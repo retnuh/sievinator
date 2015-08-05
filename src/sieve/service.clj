@@ -3,7 +3,6 @@
             [org.zalando.stups.friboo.log :as log]
             [org.zalando.stups.friboo.config :refer [require-config]]
             [sieve.sieve :as sieve]
-            [sieve.storage :as storage]
             ))
 
 (defn start-component [component]
@@ -14,11 +13,9 @@
     
     (do
       (let [configuration (:configuration component)
-            ss (:ss component)
-            config-state (if-let [bs (:block-size configuration)]
-                           {:block-size bs}
-                           {})
-            state (merge config-state (storage/load-state ss))
+            state (if-let [bs (:block-size configuration)]
+                    {:block-size bs}
+                    {})
             the-sievinator (sieve/sievinator state)]
         (log/debug "Starting sievinator with state: %s" state)
         (assoc component
@@ -41,9 +38,6 @@
 
     (do
       (log/info "Stopping SIEVE.")
-      (when-let [ss (:ss component)]
-        (log/info "Persisting SIEVE state")
-        (storage/store-state ss ((:state component))))
       (dissoc component :sievinator))))
 
 (defrecord SIEVE [configuration ss]
@@ -53,4 +47,4 @@
    (stop [this]
      (stop-component this)))
 
-(def default-sieve-configuration {:sieve-block-size 100 :sieve-ss "FS"})
+(def default-sieve-configuration {:sieve-block-size 100})
