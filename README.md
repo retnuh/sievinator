@@ -3,7 +3,7 @@ A small REST service showing off some of the features for the [Friboo](https://g
 
 The project shows an evolution of steps, in different branches.  The
 project itself provides a REST wrapper around what was originally a
-small prime number sieve but grew to be a bit more all-singing all
+small prime number sieve (for a seperate project) but grew to be a bit more all-singing all
 dancing, including allowing you to get factors for numbers, test for
 primality, etc.  The main point was to expose the functionality of
 *SOMETHING*, where the something itself was reasonably self contained
