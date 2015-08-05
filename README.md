@@ -20,6 +20,149 @@ Finally, the [master](https://github.com/retnuh/sievinator) branch includes the 
 ## Running stuff
 Everything can be run from the repl or using `lein run`.
 
+The default port for the server is `8080`.
+
+The UI is accessible by pointing your browser at:
+`http://localhost:8080/ui/`.
+
+a JSON form of the swagger definition itself is available at:
+`http://localhost:8080/swagger.json`.
+
+Some fun examples with the excellent
+[HTTPie](https://github.com/jkbrzt/httpie):
+
+```
+$ http -f :8080/sieve/block-size size=200
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 3
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:30:03 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+100
+
+$ http -f :8080/sieve/block-size size=201
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 3
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:30:11 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+200
+
+$ http -f :8080/sieve/block-size 
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 3
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:30:16 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+201
+
+$ http -f :8080/sieve/highest-seen
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 3
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:33:56 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+201
+
+$ http -f :8080/primes/nth/250
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 4
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:34:12 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+1583
+
+$ http -f :8080/sieve/highest-seen
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 4
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:34:16 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+1801
+
+$ http -f :8080/numbers/is-prime/1801
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 4
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:35:00 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+true
+
+$ http -f :8080/numbers/is-prime/1799
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 5
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:35:05 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+false
+
+$ http -f :8080/numbers/factors/1799
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers:
+Access-Control-Allow-Methods: GET, POST, DELETE, PUT, PATCH, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Content-Length: 7
+Content-Type: application/json
+Date: Wed, 05 Aug 2015 15:35:12 GMT
+Server: Jetty(9.2.10.v20150310)
+Strict-Transport-Security: max-age=10886400
+
+[
+    7, 
+    257
+]
+
+```
+
 
 ## (UN)License
 This is free and unencumbered software released into the public domain.

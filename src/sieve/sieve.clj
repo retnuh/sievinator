@@ -102,7 +102,7 @@
                    (let [{:keys [odd-numbers-seen]} @the-agent]
                      (= 0 (odd-numbers-seen (dec (quot n 2))))))))
              (block-size
-               ([] (get (state) :block-size 100))
+               ([] (or (:block-size (state)) 100))
                ([bs] (and bs (send the-agent assoc :block-size bs))))
              ]
        {:wait #(await the-agent) :state state :primes-up-to primes-up-to
