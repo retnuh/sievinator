@@ -49,9 +49,11 @@
   
 (defn primes-nth [{:keys [n]} request {:keys [primes]}]
   (log/debug (str "Looking for nth " n " prime " (type primes)))
-  (-> (nth primes n)
-      response
-      content-type-json))
+  (if (pos? n)
+    (-> (nth primes (dec n))
+        response
+        content-type-json)
+    (api/error 400 "n must be a postive integer")))
 
 ;; the sieve itself
 
@@ -77,17 +79,3 @@
    (-> (state)
        response
        content-type-json)))
-
-;; (defn approve-version! [{:keys [application_id version_id approval]} request db]
-;;   (if-let [application (load-application application_id db)]
-;;     (do
-;;       (u/require-internal-team (:team_id application) request)
-;;       (let [defaults {:notes nil}]
-;;         (sql/cmd-approve-version!
-;;           (merge defaults approval {:version_id     version_id
-;;                                     :application_id application_id
-;;                                     :user_id        (get-in request [:tokeninfo "uid"])})
-;;           {:connection db}))
-;;       (log/audit "Approved version %s for application %s." version_id application_id)
-;;       (response nil))
-;;     (api/error 404 "application not found")))

@@ -28,7 +28,6 @@
                             {:configuration (:sqlite-ss configuration)})
                 :sieve (using
                         (svc/map->SIEVE {:configuration (:sieve configuration)})
-                        
                         {:ss (if (= sieve-ss "FS") :fs-ss :sqlite-ss)})
                 :api (using
                       (api/map->API {:configuration (:http configuration)})
