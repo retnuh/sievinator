@@ -53,4 +53,4 @@
    (stop [this]
      (stop-component this)))
 
-(def default-sieve-configuration {:sieve-block-size 100})
+(def default-sieve-configuration {:sieve-block-size 100 :sieve-ss "FS"})

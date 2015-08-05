@@ -38,7 +38,7 @@
              odd-numbers-rs (odd-numbers-seen conn)
              primes (->> odd-numbers-rs
                          (filter (fn [{:keys [ind factor]}] (zero? factor)))
-                         (map #(number-for-index (:ind %))))
+                         (mapv #(number-for-index (:ind %))))
              odd-numbers-seen (->> odd-numbers-rs
                                    (mapv :factor))
              state {:block-size block-size :primes primes

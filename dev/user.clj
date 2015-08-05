@@ -26,7 +26,7 @@
   (alter-var-root #'system
                   (fn [s] (eval (read-string
                                 "(do (require '(sieve core))
-                                     (sieve.core/run {:system-log-level \"DEBUG\"}))"  )))))
+                                     (sieve.core/run {:system-log-level \"DEBUG\" :sieve-ss \"DB\"}))")))))
 
 (defn stop
   "Stops the system if it is currently running, updates the Var

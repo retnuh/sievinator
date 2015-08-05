@@ -20,15 +20,16 @@
                         fs-ss/default-fs-sieve-storage-configuration
                         sqlite-ss/default-sqlite-sieve-storage-configuration
                         default-configuration])
-        _ (log/info "Starting with configuration: %s" (config/mask configuration))
+        sieve-ss (get-in configuration [:sieve :ss])
+        _ (log/info "Starting with configuration: %s %s" sieve-ss (config/mask configuration))
         system (system-map
                 :fs-ss (fs-ss/map->FS-SS {:configuration (:fs-ss configuration)})
                 :sqlite-ss (sqlite-ss/map->SQLITE-SS
                             {:configuration (:sqlite-ss configuration)})
                 :sieve (using
                         (svc/map->SIEVE {:configuration (:sieve configuration)})
-                        ;; TODO choose which storage to use!
-                        {:ss :sqlite-ss})
+                        
+                        {:ss (if (= sieve-ss "FS") :fs-ss :sqlite-ss)})
                 :api (using
                       (api/map->API {:configuration (:http configuration)})
                       [:sieve]))]

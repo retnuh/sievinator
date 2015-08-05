@@ -48,7 +48,7 @@
       content-type-json))
   
 (defn primes-nth [{:keys [n]} request {:keys [primes]}]
-  (log/debug (str "Looking for nth " n " prime"))
+  (log/debug (str "Looking for nth " n " prime " (type primes)))
   (-> (nth primes n)
       response
       content-type-json))

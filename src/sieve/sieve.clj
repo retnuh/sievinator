@@ -66,15 +66,14 @@
                              (recur (/ n i) (conj f i) numbers))))))
              (blocked-seq
                ([f]
-                (ensure-n (:block-size (state)) false)
+                (ensure-n (block-size) false)
                 (lazy-seq (blocked-seq f 0)))
                ([f start-index]
                 (await the-agent)
                 (let [{:keys [primes odd-numbers-seen] :as s} @the-agent
-                      block-size (:block-size (state))
                       size (* 2 (count odd-numbers-seen))
                       [sq nsize] (f s start-index)]
-                  (ensure-n (+ block-size size) false)
+                  (ensure-n (+ (block-size) size) false)
                   (lazy-cat sq (blocked-seq f nsize)))))
              (primes-seq []
                (cons 2 (blocked-seq (fn [{primes :primes} start-index]
@@ -103,8 +102,8 @@
                    (let [{:keys [odd-numbers-seen]} @the-agent]
                      (= 0 (odd-numbers-seen (dec (quot n 2))))))))
              (block-size
-               ([] (:block-size (state)))
-               ([bs] (send the-agent assoc :block-size bs)))
+               ([] (get (state) :block-size 100))
+               ([bs] (and bs (send the-agent assoc :block-size bs))))
              ]
        {:wait #(await the-agent) :state state :primes-up-to primes-up-to
         :primes-seq primes-seq :composites-seq composites-seq :factors-seq factors-seq
