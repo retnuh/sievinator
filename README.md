@@ -1,7 +1,13 @@
 # The Sievinator
 A small REST service showing off some of the features for the [Friboo](https://github.com/zalando-stups/friboo) project.  [Friboo](https://github.com/zalando-stups/friboo) is an opinionated framework that leverages [Swagger](http://swagger.io/),  [swagger1st](https://github.com/sarnowski/swagger1st), and Stuart Sierra's [Component](https://github.com/stuartsierra/component) library.
 
-The project shows an evolution of steps, in different branches.
+The project shows an evolution of steps, in different branches.  The
+project itself provides a REST wrapper around what was originally a
+small prime number sieve but grew to be a bit more all-singing all
+dancing, including allowing you to get factors for numbers, test for
+primality, etc.  The main point was to expose the functionality of
+*SOMETHING*, where the something itself was reasonably self contained
+and not too likely to distract from exploring the bits that Friboo (& co.) give.
 
 The branch [1-bare-minimum](https://github.com/retnuh/sievinator/tree/1-bare-minimum) shows a "bare minumum" example with 1 api endpoint and 2 components, with no additional components for storage.
 
