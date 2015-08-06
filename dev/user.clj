@@ -15,6 +15,10 @@
    [clojure.tools.namespace.repl :refer [refresh refresh-all disable-unload!]]
    [com.stuartsierra.component :as component]))
 
+;; Stop the reloading magic from unloading the user namespace, stop
+;; irritation when compile error, etc.
+(disable-unload!)
+
 (def system
   "A Var containing an object representing the application under
   development."
@@ -47,6 +51,3 @@
   (stop)
   (refresh :after 'user/go))
 
-;; Stop the reloading magic from unloading this bad boy, stop
-;; irritation when compile error, etc.
-(disable-unload!)

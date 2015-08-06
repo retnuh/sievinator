@@ -9,6 +9,13 @@ primality, etc.  The main point was to expose the functionality of
 *SOMETHING*, where the something itself was reasonably self contained
 and not too likely to distract from exploring the bits that Friboo (& co.) give.
 
+For those interested in the sieve itself, I encourage you to look at
+[Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) and the
+[Sieve of Sundaram](https://en.wikipedia.org/wiki/Sieve_of_Sundaram).
+I think what is implemented here is technically a variant on the
+latter, but I don't think I had read about it until after I had
+written my code, but I could be wrong.
+
 The branch [1-bare-minimum](https://github.com/retnuh/sievinator/tree/1-bare-minimum) shows a "bare minumum" example with 1 api endpoint and 2 components, with no additional components for storage.
 
 The branch [2-more-endpoints](https://github.com/retnuh/sievinator/tree/2-more-endpoints) shows more endpoints, including ones with multiple args and some that change server-side state.
